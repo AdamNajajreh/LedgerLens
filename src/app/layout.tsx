@@ -27,7 +27,7 @@ export default function RootLayout({
           <div className="mx-5 mt-5">
             <Navbar />
           </div>
-          <main className="flex-1 p-4">{children}</main>
+          <main className="flex-1">{children}</main>
         </div>
       </body>
     </html>

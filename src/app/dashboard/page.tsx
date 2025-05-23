@@ -1,12 +1,25 @@
-import React from "react";
+import React from 'react'
+import GlassOverlay from '@/components/Dashboard/GlassOverlay'
+import GraphScene from '@/components/Dashboard/GraphScene'
+import DashboardComp from '@/components/Dashboard/DashboardComp'
 
 export default function Dashboard() {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-      <div className="bg-white rounded-lg shadow p-6">
-        <p>Welcome to your dashboard!</p>
+    <div className="relative w-full h-screen overflow-hidden bg-gray-900">
+      {/* Background Graph */}
+      <div className="absolute inset-0 z-0">
+        <GraphScene />
+      </div>
+
+      {/* Blur overlay */}
+      <div className="absolute inset-0 z-10">
+        <GlassOverlay />
+      </div>
+
+      {/* UI on top */}
+      <div className="relative z-20 px-6 py-10">
+        <DashboardComp />
       </div>
     </div>
-  );
+  )
 }
