@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/navbar/navbar";
+import { Footer } from "@/components/Footer/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,14 +23,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.className} ${geistMono.className} antialiased bg-gray-200`}
-      >
-        <div className="min-h-screen">
+      <body className={`${inter.className} ${geistMono.className} antialiased bg-gray-200`}>
+        <div className="min-h-screen flex flex-col relative">
           <div className="fixed top-5 left-5 right-5 z-50">
             <Navbar />
           </div>
           <main className="flex-1">{children}</main>
+          <Footer></Footer>
         </div>
       </body>
     </html>

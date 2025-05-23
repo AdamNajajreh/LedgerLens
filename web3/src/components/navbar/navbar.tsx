@@ -2,11 +2,19 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FiInfo, FiCircle, FiMenu, FiX, FiArrowRight } from "react-icons/fi";
+import {
+  FiInfo,
+  FiCircle,
+  FiMenu,
+  FiX,
+  FiArrowRight,
+  FiLayers,
+} from "react-icons/fi";
 
 const routes = [
-  { title: "About", href: "/about", icon: FiInfo },
-  { title: "Rollups", href: "/rollups", icon: FiCircle },
+  { title: "About", href: "/dashboard/about", icon: FiInfo },
+  { title: "Layers", href: "/dashboard/layers", icon: FiLayers },
+  { title: "Rollups", href: "/dashboard/rollups", icon: FiCircle },
 ];
 
 export const Navbar = () => {
