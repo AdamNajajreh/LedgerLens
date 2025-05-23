@@ -7,29 +7,48 @@ import { Group } from "three";
 
 function GraphModel() {
   const ref = useRef<Group>(null);
-  const [velocity, setVelocity] = useState(0);
+  const [isScrolling, setIsScrolling] = useState(false);
+  const [scrollDirection, setScrollDirection] = useState(0);
+  const [rotationSpeed, setRotationSpeed] = useState(0);
 
   const { scene } = useGLTF("/graph.glb");
 
-  // Apply scroll-induced rotation
+  // Apply rotation with gradual slowdown
   useFrame(() => {
     if (ref.current) {
-      ref.current.rotation.y += velocity;
-    }
-    // Apply damping
-    if (velocity !== 0) {
-      setVelocity((v) => (Math.abs(v) < 0.0001 ? 0 : v * 0.95));
+      if (isScrolling) {
+        // Set full speed while scrolling
+        setRotationSpeed(0.01);
+      } else if (rotationSpeed > 0) {
+        // Gradually decrease speed when not scrolling
+        setRotationSpeed(prev => Math.max(0, prev - 0.0005));
+      }
+      ref.current.rotation.y += scrollDirection * rotationSpeed;
     }
   });
 
   useEffect(() => {
+    let scrollTimeout: NodeJS.Timeout;
+
     const handleWheel = (e: WheelEvent) => {
       const direction = e.deltaY > 0 ? 1 : -1;
-      setVelocity((v) => v + direction * 0.01);
+      setIsScrolling(true);
+      setScrollDirection(direction);
+
+      // Clear any existing timeout
+      clearTimeout(scrollTimeout);
+
+      // Set a timeout to stop rotation shortly after scrolling stops
+      scrollTimeout = setTimeout(() => {
+        setIsScrolling(false);
+      }, 50);
     };
 
     window.addEventListener("wheel", handleWheel);
-    return () => window.removeEventListener("wheel", handleWheel);
+    return () => {
+      window.removeEventListener("wheel", handleWheel);
+      clearTimeout(scrollTimeout);
+    };
   }, []);
 
   return <primitive object={scene} ref={ref} />;
