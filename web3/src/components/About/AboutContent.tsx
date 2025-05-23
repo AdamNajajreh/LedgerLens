@@ -4,14 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
 import { Bar } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Tooltip, Legend } from "chart.js";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
@@ -31,20 +24,19 @@ export const AboutContent = () => {
 
   return (
     <div className="h-screen w-full overflow-y-scroll text-white snap-y snap-mandatory relative">
-      {/* Section 1: Introduction */}
+      {/* Hero Section */}
       <section className="h-screen flex items-center justify-center snap-start">
         <div className="max-w-4xl mx-auto text-center space-y-8 p-8 backdrop-blur-md bg-white/80 rounded-2xl m-8 border border-gray-200 hover:border-gray-300 transition-all duration-300 shadow-lg">
           <h2 className="text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-rose-500 to-orange-400">
             🔍 About This Project
           </h2>
           <p className="text-2xl text-gray-700">
-            Explore how Ethereum's multi-layer ecosystem transfers value. This
-            project indexes and visualizes token flows across L1 and L2 to
-            reveal key patterns, bridge usage, and scaling behaviors.
+            Explore how Ethereum's multi-layer ecosystem transfers value. This project indexes and visualizes token
+            flows across L1 and L2 to reveal key patterns, bridge usage, and scaling behaviors.
           </p>
           <p className="text-xl text-gray-700">
-            All data is pulled from the Ethereum blockchain and categorized by
-            bridge, layer direction, and transaction metrics.
+            All data is pulled from the Ethereum blockchain and categorized by bridge, layer direction, and transaction
+            metrics.
           </p>
         </div>
       </section>
@@ -56,7 +48,6 @@ export const AboutContent = () => {
             🚀 Live Layer Activity Stats
           </h3>
           <div className="flex flex-col lg:flex-row gap-10 items-start">
-            {/* Stats */}
             <div className="flex flex-col gap-6 w-full lg:w-1/3">
               {[
                 { label: "Total ETH Bridged", value: 124350 },
@@ -73,23 +64,18 @@ export const AboutContent = () => {
                   <div className="text-3xl font-semibold text-[#38bdf8]">
                     <CountUp end={stat.value} duration={2.5} separator="," />
                   </div>
-                  <div className="mt-2 text-base text-gray-300">
-                    {stat.label}
-                  </div>
+                  <div className="mt-2 text-base text-gray-300">{stat.label}</div>
                 </motion.div>
               ))}
             </div>
 
-            {/* Chart */}
             <motion.div
               className="w-full lg:w-2/3 bg-[#2d3748] rounded-lg p-6"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.8 }}
             >
-              <h4 className="text-lg font-semibold mb-4 text-white">
-                📊 Most Used L2 Bridges
-              </h4>
+              <h4 className="text-lg font-semibold mb-4 text-white">📊 Most Used L2 Bridges</h4>
               <div className="h-[300px] w-full">
                 <Bar
                   data={bridgeVolumeData}

@@ -17,7 +17,7 @@ export const About = () => {
       </div>
 
       {/* UI on top */}
-      <div className="relative z-20 px-6 py-10">
+      <div className="relative z-20">
         <AboutContent />
       </div>
     </div>
