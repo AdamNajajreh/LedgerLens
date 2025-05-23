@@ -2,7 +2,14 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FiInfo, FiCircle, FiMenu, FiX, FiArrowRight, FiLayers } from "react-icons/fi";
+import {
+  FiInfo,
+  FiCircle,
+  FiMenu,
+  FiX,
+  FiArrowRight,
+  FiLayers,
+} from "react-icons/fi";
 
 const routes = [
   { title: "About", href: "/dashboard/about", icon: FiInfo },
@@ -29,7 +36,11 @@ export const Navbar = () => {
               className="md:hidden rounded-lg focus:outline-none focus:shadow-outline hover:bg-gray-100 p-2 transition-colors"
               onClick={() => setIsOpen(!isOpen)}
             >
-              {isOpen ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
+              {isOpen ? (
+                <FiX className="w-6 h-6" />
+              ) : (
+                <FiMenu className="w-6 h-6" />
+              )}
             </button>
           </div>
           <div className="flex items-center">
