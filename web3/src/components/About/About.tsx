@@ -5,7 +5,7 @@ import { AboutContent } from "./AboutContent";
 
 export const About = () => {
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-gray-900">
+    <div className="relative w-full h-screen overflow-hidden">
       {/* Background Graph */}
       <div className="absolute inset-0 z-0">
         <GraphScene />
