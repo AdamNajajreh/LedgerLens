@@ -10,11 +10,11 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 export const AboutContent = () => {
   const bridgeVolumeData = {
-    labels: ["Arbitrum", "Optimism", "zkSync", "Base", "Starknet"],
+    labels: ["zkSync", "Arbitrum", "StarkNet", "Optimism", "Base"],
     datasets: [
       {
-        label: "ETH Bridged (in thousands)",
-        data: [150, 120, 90, 75, 60],
+        label: "ETH Bridged",
+        data: [3727077, 3557939, 915654, 788447, 390437],
         backgroundColor: "#38bdf8",
         borderRadius: 8,
         barThickness: 28,
@@ -50,9 +50,9 @@ export const AboutContent = () => {
           <div className="flex flex-col lg:flex-row gap-10 items-start">
             <div className="flex flex-col gap-6 w-full lg:w-1/3">
               {[
-                { label: "Total ETH Bridged", value: 124350 },
-                { label: "Active Bridges", value: 7 },
-                { label: "Total L2 Transactions", value: 3250000 },
+                { label: "Total ETH Bridged", value: 39870000000 },
+                { label: "Active Bridges", value: 150 },
+                { label: "Total L2 Transactions", value: 42000000 },
               ].map((stat, i) => (
                 <motion.div
                   key={i}
