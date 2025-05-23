@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { FiInfo, FiCircle, FiMenu, FiX, FiArrowRight } from "react-icons/fi";
 
 const routes = [
-  { title: "About", href: "/dashboard/about", icon: FiInfo },
+  { title: "About", href: "/about", icon: FiInfo },
   { title: "Rollups", href: "/rollups", icon: FiCircle },
 ];
 
