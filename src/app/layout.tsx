@@ -22,9 +22,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} ${geistMono.className} antialiased bg-gray-200`}>
+      <body
+        className={`${inter.className} ${geistMono.className} antialiased bg-gray-200`}
+      >
         <div className="min-h-screen">
-          <div className="mx-5 mt-5">
+          <div className="fixed top-5 left-5 right-5 z-50">
             <Navbar />
           </div>
           <main className="flex-1">{children}</main>

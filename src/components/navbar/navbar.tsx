@@ -6,7 +6,7 @@ import { FiInfo, FiCircle, FiMenu, FiX, FiArrowRight } from "react-icons/fi";
 
 const routes = [
   { title: "About", href: "/dashboard/about", icon: FiInfo },
-  { title: "Rollups", href: "/dashboard/recommendation", icon: FiCircle },
+  { title: "Rollups", href: "/rollups", icon: FiCircle },
 ];
 
 export const Navbar = () => {
@@ -28,7 +28,11 @@ export const Navbar = () => {
               className="md:hidden rounded-lg focus:outline-none focus:shadow-outline hover:bg-gray-100 p-2 transition-colors"
               onClick={() => setIsOpen(!isOpen)}
             >
-              {isOpen ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
+              {isOpen ? (
+                <FiX className="w-6 h-6" />
+              ) : (
+                <FiMenu className="w-6 h-6" />
+              )}
             </button>
           </div>
           <div className="flex items-center">
