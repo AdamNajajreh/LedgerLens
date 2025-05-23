@@ -1,9 +1,9 @@
-import React from 'react'
-import GlassOverlay from '@/components/Dashboard/GlassOverlay'
-import GraphScene from '@/components/Dashboard/GraphScene'
-import DashboardComp from '@/components/Dashboard/DashboardComp'
+import React from "react";
+import GlassOverlay from "@/components/Dashboard/GlassOverlay";
+import GraphScene from "@/components/Dashboard/GraphScene";
+import DashboardComp from "@/components/Dashboard/DashboardComp";
 
-export default function Dashboard() {
+export default function page() {
   return (
     <div className="relative w-full h-screen overflow-hidden bg-gray-900">
       {/* Background Graph */}
@@ -21,5 +21,5 @@ export default function Dashboard() {
         <DashboardComp />
       </div>
     </div>
-  )
+  );
 }
