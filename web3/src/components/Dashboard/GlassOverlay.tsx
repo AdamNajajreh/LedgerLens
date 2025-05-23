@@ -18,8 +18,6 @@ export default function GlassOverlay() {
         color: "#ffffff",
         fontSize: "2rem",
       }}
-    >
-      Your UI Here
-    </div>
+    ></div>
   );
 }
