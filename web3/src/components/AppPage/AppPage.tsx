@@ -17,27 +17,64 @@ const mockTransfers = [
   { blockNumber: 20000010, amount: 2, direction: "OUT" },
 ];
 
-const minBlock = 20000001;
-const maxBlock = 20000010;
+const minBlock = 20000000;
+const maxBlock = 20100000;
 
 export default function AppPage() {
   const graphRef = useRef<HTMLDivElement | null>(null);
-  
   const networkRef = useRef<Network | null>(null);
   const nodesRef = useRef<DataSet<any>>(new DataSet());
   const edgesRef = useRef<DataSet<any>>(new DataSet());
 
   const [minIncludedBlock, setMinIncludedBlock] = useState(minBlock);
+  const [bridgeData, setBridgeData] = useState<any[]>([]);
+
+  const testDbConnection = async () => {
+    try {
+      const response = await fetch("/api/bridge");
+      const data = await response.json();
+      console.log("API Response:", data);
+      if (data.data) {
+        setBridgeData(data.data);
+      }
+    } catch (error) {
+      console.error("API Error:", error);
+    }
+  };
+
+  // Call API on component mount
+  useEffect(() => {
+    testDbConnection();
+  }, []);
 
   // Update edge labels when block filter changes
   useEffect(() => {
-    const inSum = mockTransfers
-      .filter((t) => t.blockNumber >= minIncludedBlock && t.direction === "IN")
-      .reduce((acc, t) => acc + t.amount, 0);
+    const inSum = bridgeData
+      .filter(
+        (t) => Number(t.block_number) >= minBlock && Number(t.block_number) <= minIncludedBlock && t.direction === "IN"
+      )
+      .reduce((acc, t) => {
+        const amount = BigInt(t.amount);
+        const ethAmount = Number(amount) / 1e18;
+        console.log(`IN Block ${t.block_number}: ${ethAmount.toFixed(4)} ETH`);
+        return acc + ethAmount;
+      }, 0);
 
-    const outSum = mockTransfers
-      .filter((t) => t.blockNumber >= minIncludedBlock && t.direction === "OUT")
-      .reduce((acc, t) => acc + t.amount, 0);
+    const outSum = bridgeData
+      .filter(
+        (t) => Number(t.block_number) >= minBlock && Number(t.block_number) <= minIncludedBlock && t.direction === "OUT"
+      )
+      .reduce((acc, t) => {
+        const amount = BigInt(t.amount);
+        const ethAmount = Number(amount) / 1e18;
+        console.log(`OUT Block ${t.block_number}: ${ethAmount.toFixed(4)} ETH`);
+        return acc + ethAmount;
+      }, 0);
+
+    console.log("\nBridge Transfer Totals:");
+    console.log("IN:", inSum.toFixed(4), "ETH");
+    console.log("OUT:", outSum.toFixed(4), "ETH");
+    console.log("Total:", (inSum + outSum).toFixed(4), "ETH");
 
     const edges = edgesRef.current;
 
@@ -47,40 +84,27 @@ export default function AppPage() {
     if (outEdge) {
       edges.update({
         ...outEdge,
-        label: `Outflow\n${outSum.toFixed(1)} ETH`,
+        label: `${outSum.toFixed(4)} ETH`,
       });
     }
 
     if (inEdge) {
       edges.update({
         ...inEdge,
-        label: `Inflow\n${inSum.toFixed(1)} ETH`,
+        label: `${inSum.toFixed(4)} ETH`,
       });
     }
-  }, [minIncludedBlock]);
-  
-  const [dbStatus, setDbStatus] = useState<{ status: string; message: string; timestamp?: string } | null>(null);
-
-  const testDbConnection = async () => {
-    try {
-      const response = await fetch("/api/bridge");
-      const data = await response.json();
-      console.log(data);
-      setDbStatus(data);
-    } catch (error) {
-      setDbStatus({
-        status: "error",
-        message: "Failed to connect to API endpoint",
-      });
-    }
-  };
-  
+  }, [minIncludedBlock, bridgeData]);
 
   useEffect(() => {
     if (!graphRef.current) return;
 
     const nodes = nodesRef.current;
     const edges = edgesRef.current;
+
+    // Clear existing nodes and edges
+    nodes.clear();
+    edges.clear();
 
     nodes.add([
       {
@@ -90,7 +114,7 @@ export default function AppPage() {
         image: "/eth.png",
         size: 120,
         x: -300,
-        y: 0,
+        y: 1,
         borderWidth: 4,
         color: { border: "#6366f1", background: "#ffffff" },
         font: { size: 18, color: "#111" },
@@ -102,7 +126,7 @@ export default function AppPage() {
         image: "/Optimism.png",
         size: 60,
         x: 300,
-        y: 1,
+        y: 0,
         borderWidth: 4,
         color: { border: "#ef4444", background: "#ffffff" },
         font: { size: 18, color: "#111" },
@@ -125,52 +149,50 @@ export default function AppPage() {
       },
     ]);
 
-    if (!edges.get("outflow")) {
-      edges.add([
-        {
-          id: "outflow",
-          from: "Ethereum",
-          to: "Optimism",
-          arrows: { to: { enabled: true, scaleFactor: 2.5 } },
-          label: "Outflow\n0 ETH",
-          font: {
-            size: 16,
-            vadjust: -30,
-            face: "monospace",
-            color: "#000",
-            align: "middle",
-          },
-          width: 3,
-          smooth: {
-            type: "curvedCW",
-            roundness: -0.4,
-            forceDirection: "horizontal",
-          },
-          color: { color: "green", highlight: "green" },
+    edges.add([
+      {
+        id: "outflow",
+        from: "Ethereum",
+        to: "Optimism",
+        arrows: { to: { enabled: true, scaleFactor: 2.5 } },
+        label: "0 ETH",
+        font: {
+          size: 16,
+          vadjust: -30,
+          face: "monospace",
+          color: "#000",
+          align: "middle",
         },
-        {
-          id: "inflow",
-          from: "Optimism",
-          to: "Ethereum",
-          arrows: { to: { enabled: true, scaleFactor: 2.5 } },
-          label: "Inflow\n0 ETH",
-          font: {
-            size: 16,
-            vadjust: 30,
-            face: "monospace",
-            color: "#000",
-            align: "middle",
-          },
-          width: 3,
-          smooth: {
-            type: "curvedCCW",
-            roundness: 0.4,
-            forceDirection: "horizontal",
-          },
-          color: { color: "red", highlight: "red" },
+        width: 3,
+        smooth: {
+          type: "curvedCW",
+          roundness: -0.4,
+          forceDirection: "horizontal",
         },
-      ]);
-    }
+        color: { color: "green", highlight: "green" },
+      },
+      {
+        id: "inflow",
+        from: "Optimism",
+        to: "Ethereum",
+        arrows: { to: { enabled: true, scaleFactor: 2.5 } },
+        label: "0 ETH",
+        font: {
+          size: 16,
+          vadjust: 30,
+          face: "monospace",
+          color: "#000",
+          align: "middle",
+        },
+        width: 3,
+        smooth: {
+          type: "curvedCCW",
+          roundness: 0.4,
+          forceDirection: "horizontal",
+        },
+        color: { color: "red", highlight: "red" },
+      },
+    ]);
 
     const network = new Network(
       graphRef.current,
@@ -188,13 +210,16 @@ export default function AppPage() {
     setTimeout(() => {
       const eth = nodes.get("Ethereum");
       const op = nodes.get("Optimism");
-      nodes.remove(["Ethereum", "Optimism"]);
-      nodes.add([eth, op]);
+      if (eth && op) {
+        nodes.remove(["Ethereum", "Optimism"]);
+        nodes.add([eth, op]);
+      }
     }, 100);
 
     // Animate bubbles
     let t1 = 0;
     let t2 = 0.5;
+    let animationFrameId: number;
 
     function getBezierPos(t: number, from: any, to: any, roundness: number) {
       const dx = to.x - from.x;
@@ -205,26 +230,18 @@ export default function AppPage() {
       const cp = { x: mx, y: my - roundness * dist };
 
       return {
-        x:
-          Math.pow(1 - t, 2) * from.x +
-          2 * (1 - t) * t * cp.x +
-          Math.pow(t, 2) * to.x,
-        y:
-          Math.pow(1 - t, 2) * from.y +
-          2 * (1 - t) * t * cp.y +
-          Math.pow(t, 2) * to.y,
+        x: Math.pow(1 - t, 2) * from.x + 2 * (1 - t) * t * cp.x + Math.pow(t, 2) * to.x,
+        y: Math.pow(1 - t, 2) * from.y + 2 * (1 - t) * t * cp.y + Math.pow(t, 2) * to.y,
       };
-
-
-      const x = Math.pow(1 - t, 2) * from.x + 2 * (1 - t) * t * cp.x + Math.pow(t, 2) * to.x;
-      const y = Math.pow(1 - t, 2) * from.y + 2 * (1 - t) * t * cp.y + Math.pow(t, 2) * to.y;
-
-      return { x, y };
     }
 
     function animateBubbles() {
-      const eth = network.getPositions(["Ethereum"])["Ethereum"];
-      const op = network.getPositions(["Optimism"])["Optimism"];
+      if (!networkRef.current) return;
+
+      const positions = networkRef.current.getPositions(["Ethereum", "Optimism"]);
+      const eth = positions["Ethereum"];
+      const op = positions["Optimism"];
+
       if (!eth || !op) return;
 
       t1 += 0.003;
@@ -240,52 +257,47 @@ export default function AppPage() {
         { id: "eth-bubble-2", x: pos2.x, y: pos2.y },
       ]);
 
-      requestAnimationFrame(animateBubbles);
+      animationFrameId = requestAnimationFrame(animateBubbles);
     }
 
-    requestAnimationFrame(animateBubbles);
+    // Start animation after a short delay to ensure network is ready
+    setTimeout(() => {
+      animationFrameId = requestAnimationFrame(animateBubbles);
+    }, 200);
 
-    return () => network.destroy();
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+      network.destroy();
+      nodes.clear();
+      edges.clear();
+    };
   }, []);
 
   return (
-    <div
-      className="pt-16 w-full h-screen text-black flex flex-col"
-      style={{ background: "#e4e6ea" }}
-    >
-      <div className="px-8">
-        <label className="block text-lg font-semibold mb-2">
-          From Block: {minIncludedBlock}
-        </label>
+    <div className="pt-32 h-screen text-black flex flex-col" style={{ background: "#e4e6ea" }}>
+      <div className="px-8 w-[500px] bg-white rounded-lg shadow-lg p-6 mx-auto">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-gray-600">Block Range:</span>
+          <span className="font-semibold">
+            {minBlock.toLocaleString()} - {minIncludedBlock.toLocaleString()}
+          </span>
+        </div>
         <input
           type="range"
           min={minBlock}
           max={maxBlock}
-          step={1}
+          step={1000}
           value={minIncludedBlock}
           onChange={(e) => setMinIncludedBlock(Number(e.target.value))}
-          className="w-full"
+          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
         />
       </div>
 
-    <div className="pt-32 w-full h-screen text-black flex flex-col" style={{ background: "#e4e6ea" }}>
-      <div className="p-4">
-        <h1 className="text-3xl font-bold mb-4">From: 20 000 000 To: 20 100 000 </h1>
-        <button
-          onClick={testDbConnection}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Test Database Connection
-        </button>
-        {dbStatus && (
-          <div className={`mt-4 p-4 rounded ${dbStatus.status === "success" ? "bg-green-100" : "bg-red-100"}`}>
-            <p className="font-bold">Status: {dbStatus.status}</p>
-            <p>Message: {dbStatus.message}</p>
-            {dbStatus.timestamp && <p>Timestamp: {dbStatus.timestamp}</p>}
-          </div>
-        )}
+      <div className="pt-4 w-full h-screen text-black flex flex-col" style={{ background: "#e4e6ea" }}>
+        <div ref={graphRef} className="flex-grow" />
       </div>
-      <div ref={graphRef} className="flex-grow" />
     </div>
   );
 }
