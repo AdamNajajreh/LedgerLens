@@ -22,7 +22,7 @@ export const Navbar = () => {
   const pathname = usePathname();
 
   return (
-    <div className="w-full text-gray-700 bg-white border-b border-gray-200 shadow-sm rounded-2xl">
+    <div className="w-full text-gray-700 bg-white border-b border-gray-200 shadow-md rounded-2xl">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between">
           <div className="flex items-center justify-between py-4">
@@ -66,8 +66,8 @@ export const Navbar = () => {
               ))}
             </nav>
             <Link
-              href="/app"
-              className="ml-24 p-6 py-2 bg-black text-white font-semibold hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:shadow-outline flex items-center gap-2"
+              href="/dashboard/apppage"
+              className="rounded-2xl ml-24 p-6 py-2 bg-black text-white font-semibold hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:shadow-outline flex items-center gap-2"
             >
               Launch App
               <FiArrowRight className="w-4 h-4" />

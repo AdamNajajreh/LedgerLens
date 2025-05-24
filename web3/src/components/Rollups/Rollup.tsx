@@ -35,10 +35,10 @@ export const Rollup = () => {
     [-21.5, 3, -10],
   ];
   const rotations: [number, number, number][] = [
-    [0, 0, 0],
-    [0, 3, 0],
-    [0, 0, 0],
-    [0, 3, 0.2],
+    [1.5, 0, 0],
+    [1.5, 3, 0],
+    [1.5, 0, 0],
+    [1.5, 3, 0.2],
   ];
 
   return (
@@ -54,9 +54,7 @@ export const Rollup = () => {
         >
           <MagnifyingGlass
             position={positions[sectionIndex] ?? [0, 0, -10]}
-            rotation={
-              rotations[sectionIndex] ?? [0, 0, 0]
-            }
+            rotation={rotations[sectionIndex] ?? [0, 0, 0]}
             rotationSpeed={0}
             bobSpeed={5}
             scale={0.035}
