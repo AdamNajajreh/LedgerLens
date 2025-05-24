@@ -16,7 +16,7 @@ interface MagnifyingGlassProps {
 export default function MagnifyingGlass({
   position = [0, 0, -10],
   rotation = [1.5, 0.3, -0.2],
-  scale = 0.035,
+  scale = 1,
   rotationSpeed = 0.6,
   bobSpeed = 2,
 }: MagnifyingGlassProps) {
@@ -74,7 +74,7 @@ export default function MagnifyingGlass({
   return (
     <>
       <ambientLight intensity={1} />
-      <directionalLight position={[5, 5, 10]} intensity={2} />
+      <directionalLight position={[0, 0, 20]} intensity={2} />
       <group ref={groupRef}>
         <primitive object={scene} />
       </group>

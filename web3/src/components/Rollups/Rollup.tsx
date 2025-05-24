@@ -33,14 +33,14 @@ export const Rollup = () => {
   const positions: [number, number, number][] = [
     [21, 0, -10],
     [-21.5, 0, -10],
-    [21, -1, -10],
+    [21, 4, -10],
     [-21.5, 3, -10],
   ];
   const rotations: [number, number, number][] = [
-    [1.5, 0, 0],
-    [1.5, 3, 0],
-    [1.5, 0, 0],
-    [1.5, 3, 0.2],
+    [0, 0, 0],
+    [0, 3, 0],
+    [0, 0, 0],
+    [0, 3, 0.2],
   ];
 
   return (
@@ -50,13 +50,16 @@ export const Rollup = () => {
     >
       {/* 3D Canvas fixed behind */}
       <div className="fixed top-0 left-0 w-full h-screen z-0">
-        <Canvas camera={{ position: [0, 0, 20], fov: 45 }} style={{ background: "#e4e6ea" }}>
+        <Canvas
+          camera={{ position: [0, 0, 20], fov: 45 }}
+          style={{ background: "#e4e6ea" }}
+        >
           <MagnifyingGlass
             position={positions[sectionIndex] ?? [0, 0, -10]}
             rotation={rotations[sectionIndex] ?? [0, 0, 0]}
             rotationSpeed={0}
             bobSpeed={5}
-            scale={0.035}
+            scale={1.7}
           />
         </Canvas>
       </div>
@@ -69,12 +72,23 @@ export const Rollup = () => {
               Rollups Explained
             </h1>
             <p className="text-2xl text-gray-700">
-              Discover how Layer 2 scaling solutions are revolutionizing blockchain technology
+              Discover how Layer 2 scaling solutions are revolutionizing
+              blockchain technology
             </p>
             <div className="flex justify-center w-full">
               <div className="animate-bounce mt-8">
-                <svg className="w-8 h-8" fill="none" stroke="black" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                <svg
+                  className="w-8 h-8"
+                  fill="none"
+                  stroke="black"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                  />
                 </svg>
               </div>
             </div>
@@ -87,9 +101,10 @@ export const Rollup = () => {
               What are Rollups?
             </h2>
             <p className="text-xl leading-relaxed text-gray-700 text-center">
-              Rollups are Layer 2 scaling solutions that execute transactions outside the main Ethereum chain (Layer 1),
-              but post transaction data on Layer 1. This significantly reduces gas fees and increases throughput while
-              maintaining Ethereum's security.
+              Rollups are Layer 2 scaling solutions that execute transactions
+              outside the main Ethereum chain (Layer 1), but post transaction
+              data on Layer 1. This significantly reduces gas fees and increases
+              throughput while maintaining Ethereum's security.
             </p>
 
             {/* Smaller Illustrative Images */}
@@ -122,9 +137,12 @@ export const Rollup = () => {
             </h2>
             <div className="grid grid-cols-2 gap-8">
               <div className="p-8 rounded-2xl backdrop-blur-md bg-white/80 border border-gray-200 hover:border-gray-300 shadow-lg">
-                <h3 className="text-2xl font-semibold mb-4 text-rose-500">Optimistic Rollups</h3>
+                <h3 className="text-2xl font-semibold mb-4 text-rose-500">
+                  Optimistic Rollups
+                </h3>
                 <p className="text-gray-700">
-                  Assume validity by default; fraud proofs can challenge incorrect transactions.
+                  Assume validity by default; fraud proofs can challenge
+                  incorrect transactions.
                 </p>
                 {/* <ImageStepper
                   images={["/images/1.png", "/images/1.png", "/images/1.png", "/images/kotleba.jpg"]}
@@ -132,9 +150,12 @@ export const Rollup = () => {
                 ></ImageStepper> */}
               </div>
               <div className="p-8 rounded-2xl backdrop-blur-md bg-white/80 border border-gray-200 hover:border-gray-300 shadow-lg">
-                <h3 className="text-2xl font-semibold mb-4 text-orange-400">ZK Rollups</h3>
+                <h3 className="text-2xl font-semibold mb-4 text-orange-400">
+                  ZK Rollups
+                </h3>
                 <p className="text-gray-700">
-                  Use cryptographic zero-knowledge proofs to validate transactions instantly.
+                  Use cryptographic zero-knowledge proofs to validate
+                  transactions instantly.
                 </p>
               </div>
             </div>
@@ -149,16 +170,29 @@ export const Rollup = () => {
               </h2>
               <div className="grid grid-cols-3 gap-6">
                 <div className="p-8 rounded-2xl backdrop-blur-md bg-white/80 border border-gray-200 shadow-lg">
-                  <h3 className="text-2xl font-semibold mb-4 text-rose-500">Lower Fees</h3>
-                  <p className="text-gray-700">Reduce transaction costs by executing off-chain.</p>
+                  <h3 className="text-2xl font-semibold mb-4 text-rose-500">
+                    Lower Fees
+                  </h3>
+                  <p className="text-gray-700">
+                    Reduce transaction costs by executing off-chain.
+                  </p>
                 </div>
                 <div className="p-8 rounded-2xl backdrop-blur-md bg-white/80 border border-gray-200 shadow-lg">
-                  <h3 className="text-2xl font-semibold mb-4 text-orange-400">Higher Throughput</h3>
-                  <p className="text-gray-700">Enable more transactions per second.</p>
+                  <h3 className="text-2xl font-semibold mb-4 text-orange-400">
+                    Higher Throughput
+                  </h3>
+                  <p className="text-gray-700">
+                    Enable more transactions per second.
+                  </p>
                 </div>
                 <div className="p-8 rounded-2xl backdrop-blur-md bg-white/80 border border-gray-200 shadow-lg">
-                  <h3 className="text-2xl font-semibold mb-4 text-rose-500">Security</h3>
-                  <p className="text-gray-700">Maintain Ethereum’s security guarantees via data availability.</p>
+                  <h3 className="text-2xl font-semibold mb-4 text-rose-500">
+                    Security
+                  </h3>
+                  <p className="text-gray-700">
+                    Maintain Ethereum’s security guarantees via data
+                    availability.
+                  </p>
                 </div>
               </div>
             </div>
