@@ -291,7 +291,10 @@ export default function AppPage() {
           step={1000}
           value={minIncludedBlock}
           onChange={(e) => setMinIncludedBlock(Number(e.target.value))}
-          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+          className="w-full h-2 bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+          style={{
+            background: `linear-gradient(to right, #6366f1 ${((minIncludedBlock - minBlock) / (maxBlock - minBlock)) * 100}%, #e5e7eb ${((minIncludedBlock - minBlock) / (maxBlock - minBlock)) * 100}%)`
+          }}
         />
       </div>
 
