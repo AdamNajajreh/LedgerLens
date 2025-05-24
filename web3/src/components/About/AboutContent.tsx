@@ -67,7 +67,7 @@ export const AboutContent = () => {
             {
               label: "Monthly Volume (USD)",
               data: topBridges.map((bridge) => bridge.monthlyVolume || 0),
-              backgroundColor: "#38bdf8",
+              backgroundColor: "rgba(244, 63, 94, 0.8)", // rose-500 with opacity
               borderRadius: 8,
               barThickness: 28,
             },
@@ -120,26 +120,26 @@ export const AboutContent = () => {
               ].map((stat, i) => (
                 <motion.div
                   key={i}
-                  className="bg-[#2d3748] rounded-lg p-6 shadow-md"
+                  className="bg-gradient-to-r from-rose-500 to-orange-400 rounded-lg p-6 shadow-md"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.2 }}
                 >
-                  <div className="text-3xl font-semibold text-[#38bdf8]">
+                  <div className="text-3xl font-semibold text-white">
                     <CountUp end={stat.value} duration={2.5} separator="," decimals={0} />
                   </div>
-                  <div className="mt-2 text-base text-gray-300">{stat.label}</div>
+                  <div className="mt-2 text-base text-white/90">{stat.label}</div>
                 </motion.div>
               ))}
             </div>
 
             <motion.div
-              className="w-full lg:w-2/3 bg-[#2d3748] rounded-lg p-6"
+              className="w-full lg:w-2/3 bg-gradient-to-r from-rose-500/10 to-orange-400/10 rounded-lg p-6"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.8 }}
             >
-              <h4 className="text-lg font-semibold mb-4 text-white">Top 5 Bridges by Monthly Volume</h4>
+              <h4 className="text-lg font-semibold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-rose-500 to-orange-400">Top 5 Bridges by Monthly Volume</h4>
               <div className="h-[300px] w-full">
                 <Bar
                   data={bridgeVolumeData}
@@ -148,7 +148,7 @@ export const AboutContent = () => {
                     maintainAspectRatio: false,
                     plugins: {
                       legend: {
-                        labels: { color: "#e2e8f0" },
+                        labels: { color: "#1f2937" },
                       },
                       tooltip: {
                         mode: "index",
@@ -164,7 +164,7 @@ export const AboutContent = () => {
                     scales: {
                       x: {
                         ticks: {
-                          color: "#cbd5e1",
+                          color: "#1f2937",
                           maxRotation: 45,
                           minRotation: 45,
                         },
@@ -172,12 +172,12 @@ export const AboutContent = () => {
                       },
                       y: {
                         ticks: {
-                          color: "#cbd5e1",
+                          color: "#1f2937",
                           callback: function (value) {
                             return "$" + value.toLocaleString(undefined, { maximumFractionDigits: 0 });
                           },
                         },
-                        grid: { color: "#334155" },
+                        grid: { color: "#e5e7eb" },
                       },
                     },
                   }}
