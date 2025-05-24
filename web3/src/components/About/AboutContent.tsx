@@ -39,13 +39,16 @@ export const AboutContent = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("https://bridges.llama.fi/bridges");
-        const bridgeData = await res.json();
+        // Fetch bridge data
+        const bridgeResponse = await fetch("https://bridges.llama.fi/bridges");
+        const bridgeData = await bridgeResponse.json();
 
+        // Calculate total monthly volume across all bridges
         const total = bridgeData.bridges.reduce((sum: number, bridge: any) => {
           return sum + (bridge.monthlyVolume || 0);
         }, 0);
 
+        // Count unique chains across all bridge
         const allChains = new Set();
         bridgeData.bridges.forEach((bridge: any) => {
           bridge.chains.forEach((chain: string) => {
@@ -126,7 +129,7 @@ export const AboutContent = () => {
       >
         <div className="max-w-4xl mx-auto text-center space-y-8 p-8 backdrop-blur-md bg-white/80 rounded-2xl m-8 border border-gray-200 hover:border-gray-300 transition-all duration-300 shadow-lg">
           <h2 className="text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-rose-500 to-orange-400">
-            🔍 About This Project
+            About This Project
           </h2>
           <p className="text-2xl text-gray-700">
             Explore how Ethereum's multi-layer ecosystem transfers value. This
@@ -147,7 +150,7 @@ export const AboutContent = () => {
       >
         <div className="max-w-6xl mx-auto p-6 backdrop-blur-md bg-white/80 rounded-2xl m-4 border border-gray-200 hover:border-gray-300 transition-all duration-300 shadow-lg w-full">
           <h3 className="text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-rose-500 to-orange-400 mb-8">
-            🚀 Live Layer Activity Stats
+            Live Layer Activity Stats
           </h3>
           <div className="flex flex-col lg:flex-row gap-10 items-start">
             <div className="flex flex-col gap-6 w-full lg:w-1/3">
@@ -167,12 +170,7 @@ export const AboutContent = () => {
                   transition={{ delay: i * 0.2 }}
                 >
                   <div className="text-3xl font-semibold text-[#38bdf8]">
-                    <CountUp
-                      end={stat.value}
-                      duration={2.5}
-                      separator=","
-                      decimals={0}
-                    />
+                    <CountUp end={stat.value} duration={2.5} separator="," decimals={0} />
                   </div>
                   <div className="mt-2 text-base text-gray-300">
                     {stat.label}
