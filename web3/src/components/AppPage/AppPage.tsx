@@ -1,10 +1,25 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Network, DataSet } from "vis-network/standalone/esm/vis-network";
 
 export default function AppPage() {
   const graphRef = useRef<HTMLDivElement | null>(null);
+  const [dbStatus, setDbStatus] = useState<{ status: string; message: string; timestamp?: string } | null>(null);
+
+  const testDbConnection = async () => {
+    try {
+      const response = await fetch("/api/bridge");
+      const data = await response.json();
+      console.log(data);
+      setDbStatus(data);
+    } catch (error) {
+      setDbStatus({
+        status: "error",
+        message: "Failed to connect to API endpoint",
+      });
+    }
+  };
 
   useEffect(() => {
     if (!graphRef.current) return;
@@ -148,14 +163,8 @@ export default function AppPage() {
         y: my - roundness * dist,
       };
 
-      const x =
-        Math.pow(1 - t, 2) * from.x +
-        2 * (1 - t) * t * cp.x +
-        Math.pow(t, 2) * to.x;
-      const y =
-        Math.pow(1 - t, 2) * from.y +
-        2 * (1 - t) * t * cp.y +
-        Math.pow(t, 2) * to.y;
+      const x = Math.pow(1 - t, 2) * from.x + 2 * (1 - t) * t * cp.x + Math.pow(t, 2) * to.x;
+      const y = Math.pow(1 - t, 2) * from.y + 2 * (1 - t) * t * cp.y + Math.pow(t, 2) * to.y;
 
       return { x, y };
     }
@@ -187,13 +196,23 @@ export default function AppPage() {
   }, []);
 
   return (
-    <div
-      className="pt-32 w-full h-screen text-black flex flex-col"
-      style={{ background: "#e4e6ea" }}
-    >
-      <h1 className="text-3xl font-bold p-4">
-        From: 20 000 000 To: 20 100 000{" "}
-      </h1>
+    <div className="pt-32 w-full h-screen text-black flex flex-col" style={{ background: "#e4e6ea" }}>
+      <div className="p-4">
+        <h1 className="text-3xl font-bold mb-4">From: 20 000 000 To: 20 100 000 </h1>
+        <button
+          onClick={testDbConnection}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Test Database Connection
+        </button>
+        {dbStatus && (
+          <div className={`mt-4 p-4 rounded ${dbStatus.status === "success" ? "bg-green-100" : "bg-red-100"}`}>
+            <p className="font-bold">Status: {dbStatus.status}</p>
+            <p>Message: {dbStatus.message}</p>
+            {dbStatus.timestamp && <p>Timestamp: {dbStatus.timestamp}</p>}
+          </div>
+        )}
+      </div>
       <div ref={graphRef} className="flex-grow" />
     </div>
   );
