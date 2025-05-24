@@ -18,7 +18,8 @@
     "react-countup": "^6.5.3",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
-    "three": "^0.176.0"
+    "three": "^0.176.0",
+    "vis-network": "^9.1.10"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

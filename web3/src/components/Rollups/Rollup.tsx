@@ -50,7 +50,7 @@ export const Rollup = () => {
     >
       {/* 3D Canvas fixed behind */}
       <div className="fixed top-0 left-0 w-full h-screen z-0">
-        <Canvas camera={{ position: [0, 0, 20], fov: 45 }} style={{ background: "#FAFAFA" }}>
+        <Canvas camera={{ position: [0, 0, 20], fov: 45 }} style={{ background: "#e4e6ea" }}>
           <MagnifyingGlass
             position={positions[sectionIndex] ?? [0, 0, -10]}
             rotation={rotations[sectionIndex] ?? [0, 0, 0]}
@@ -73,7 +73,7 @@ export const Rollup = () => {
             </p>
             <div className="flex justify-center w-full">
               <div className="animate-bounce mt-8">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8" fill="none" stroke="black" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                 </svg>
               </div>
