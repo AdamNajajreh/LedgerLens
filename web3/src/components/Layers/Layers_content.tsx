@@ -7,6 +7,10 @@ import { Footer } from "../Footer/Footer";
 export const Layers_content = () => {
   return (
     <div className="h-screen w-full overflow-y-scroll text-white snap-y snap-mandatory relative">
+      {/* Gradient Lines */}
+      <div className="fixed left-0 top-1/4 w-1 h-1/2 bg-gradient-to-b from-rose-500 to-orange-400 z-30"></div>
+      <div className="fixed right-0 top-1/4 w-1 h-1/2 bg-gradient-to-b from-rose-500 to-orange-400 z-30"></div>
+
       {/* Hero Section */}
       <section className="h-screen flex items-center justify-center snap-start">
         <div className="max-w-4xl mx-auto text-center space-y-8 p-8 backdrop-blur-md bg-white/80 rounded-2xl m-8 border border-gray-200 hover:border-gray-300 transition-all duration-300 shadow-lg">

@@ -53,12 +53,9 @@ export default function MagnifyingGlass({
     groupRef.current.scale.setScalar(currentScale.current);
 
     // Smoothly interpolate rotation
-    currentRotation.current.x +=
-      (targetRotation.current.x - currentRotation.current.x) * 0.05;
-    currentRotation.current.y +=
-      (targetRotation.current.y - currentRotation.current.y) * 0.05;
-    currentRotation.current.z +=
-      (targetRotation.current.z - currentRotation.current.z) * 0.05;
+    currentRotation.current.x += (targetRotation.current.x - currentRotation.current.x) * 0.05;
+    currentRotation.current.y += (targetRotation.current.y - currentRotation.current.y) * 0.05;
+    currentRotation.current.z += (targetRotation.current.z - currentRotation.current.z) * 0.05;
 
     // Apply rotation + spinning
     groupRef.current.rotation.set(
@@ -74,7 +71,7 @@ export default function MagnifyingGlass({
   return (
     <>
       <ambientLight intensity={1} />
-      <directionalLight position={[0, 0, 20]} intensity={2} />
+      <directionalLight position={[0, 0, 20]} intensity={10} />
       <group ref={groupRef}>
         <primitive object={scene} />
       </group>
