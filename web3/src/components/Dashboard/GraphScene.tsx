@@ -21,7 +21,7 @@ function GraphModel() {
         setRotationSpeed(0.01);
       } else if (rotationSpeed > 0) {
         // Gradually decrease speed when not scrolling
-        setRotationSpeed(prev => Math.max(0, prev - 0.0005));
+        setRotationSpeed((prev) => Math.max(0, prev - 0.0005));
       }
       ref.current.rotation.y += scrollDirection * rotationSpeed;
     }
@@ -59,14 +59,10 @@ useGLTF.preload("/graph.glb");
 export default function GraphScene() {
   return (
     <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
-      <Canvas camera={{ position: [0, 0, 10], fov: 50 }}>
+      <Canvas camera={{ position: [0, 0, 15], fov: 50 }}>
         <ambientLight intensity={1} />
         <GraphModel />
-        <OrbitControls
-          enableZoom={false}
-          enablePan={false}
-          enableRotate={false}
-        />
+        <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
       </Canvas>
     </div>
   );

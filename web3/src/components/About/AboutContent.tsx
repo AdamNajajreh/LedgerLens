@@ -1,50 +1,106 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
 import { Bar } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Tooltip, Legend } from "chart.js";
+import { Footer } from "../Footer/Footer";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 export const AboutContent = () => {
-  const bridgeVolumeData = {
-    labels: ["zkSync", "Arbitrum", "StarkNet", "Optimism", "Base"],
+  const [totalEthBridged, setTotalEthBridged] = useState(0);
+  const [activeBridges, setActiveBridges] = useState(0);
+  const [uniqueChains, setUniqueChains] = useState(0);
+  const [bridgeVolumeData, setBridgeVolumeData] = useState<{
+    labels: string[];
+    datasets: {
+      label: string;
+      data: number[];
+      backgroundColor: string;
+      borderRadius: number;
+      barThickness: number;
+    }[];
+  }>({
+    labels: [],
     datasets: [
       {
-        label: "ETH Bridged",
-        data: [3727077, 3557939, 915654, 788447, 390437],
+        label: "Monthly Volume (USD)",
+        data: [],
         backgroundColor: "#38bdf8",
         borderRadius: 8,
         barThickness: 28,
       },
     ],
-  };
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch bridge data
+        const bridgeResponse = await fetch("https://bridges.llama.fi/bridges");
+        const bridgeData = await bridgeResponse.json();
+        
+        // Calculate total monthly volume across all bridges
+        const total = bridgeData.bridges.reduce((sum: number, bridge: any) => {
+          return sum + (bridge.monthlyVolume || 0);
+        }, 0);
+        
+        // Count unique chains across all bridges
+        const allChains = new Set();
+        bridgeData.bridges.forEach((bridge: any) => {
+          bridge.chains.forEach((chain: string) => {
+            allChains.add(chain.toLowerCase()); // Normalize chain names to lowercase
+          });
+        });
+
+        // Sort bridges by monthly volume and get top 5
+        const topBridges = [...bridgeData.bridges]
+          .sort((a, b) => (b.monthlyVolume || 0) - (a.monthlyVolume || 0))
+          .slice(0, 5);
+
+        // Format the data for the chart
+        const chartData = {
+          labels: topBridges.map((bridge) => bridge.displayName),
+          datasets: [
+            {
+              label: "Monthly Volume (USD)",
+              data: topBridges.map((bridge) => bridge.monthlyVolume || 0),
+              backgroundColor: "#38bdf8",
+              borderRadius: 8,
+              barThickness: 28,
+            },
+          ],
+        };
+        
+        setTotalEthBridged(total);
+        setActiveBridges(bridgeData.bridges.length);
+        setUniqueChains(allChains.size);
+        setBridgeVolumeData(chartData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="h-screen w-full overflow-y-scroll text-white snap-y snap-mandatory relative">
-      {/* Section 1: Introduction */}
+      {/* Hero Section */}
       <section className="h-screen flex items-center justify-center snap-start">
         <div className="max-w-4xl mx-auto text-center space-y-8 p-8 backdrop-blur-md bg-white/80 rounded-2xl m-8 border border-gray-200 hover:border-gray-300 transition-all duration-300 shadow-lg">
           <h2 className="text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-rose-500 to-orange-400">
             🔍 About This Project
           </h2>
           <p className="text-2xl text-gray-700">
-            Explore how Ethereum's multi-layer ecosystem transfers value. This
-            project indexes and visualizes token flows across L1 and L2 to
-            reveal key patterns, bridge usage, and scaling behaviors.
+            Explore how Ethereum's multi-layer ecosystem transfers value. This project indexes and visualizes token
+            flows across L1 and L2 to reveal key patterns, bridge usage, and scaling behaviors.
           </p>
           <p className="text-xl text-gray-700">
-            All data is pulled from the Ethereum blockchain and categorized by
-            bridge, layer direction, and transaction metrics.
+            All data is pulled from the Ethereum blockchain and categorized by bridge, layer direction, and transaction
+            metrics.
           </p>
         </div>
       </section>
@@ -56,12 +112,11 @@ export const AboutContent = () => {
             🚀 Live Layer Activity Stats
           </h3>
           <div className="flex flex-col lg:flex-row gap-10 items-start">
-            {/* Stats */}
             <div className="flex flex-col gap-6 w-full lg:w-1/3">
               {[
-                { label: "Total ETH Bridged", value: 39870000000 },
-                { label: "Active Bridges", value: 150 },
-                { label: "Total L2 Transactions", value: 42000000 },
+                { label: "Total ETH Bridged Last Month", value: totalEthBridged },
+                { label: "Active Bridges", value: activeBridges },
+                { label: "Supported Networks", value: uniqueChains },
               ].map((stat, i) => (
                 <motion.div
                   key={i}
@@ -71,25 +126,25 @@ export const AboutContent = () => {
                   transition={{ delay: i * 0.2 }}
                 >
                   <div className="text-3xl font-semibold text-[#38bdf8]">
-                    <CountUp end={stat.value} duration={2.5} separator="," />
+                    <CountUp 
+                      end={stat.value} 
+                      duration={2.5} 
+                      separator=","
+                      decimals={0}
+                    />
                   </div>
-                  <div className="mt-2 text-base text-gray-300">
-                    {stat.label}
-                  </div>
+                  <div className="mt-2 text-base text-gray-300">{stat.label}</div>
                 </motion.div>
               ))}
             </div>
 
-            {/* Chart */}
             <motion.div
               className="w-full lg:w-2/3 bg-[#2d3748] rounded-lg p-6"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.8 }}
             >
-              <h4 className="text-lg font-semibold mb-4 text-white">
-                📊 Most Used L2 Bridges
-              </h4>
+              <h4 className="text-lg font-semibold mb-4 text-white">Top 5 Bridges by Monthly Volume</h4>
               <div className="h-[300px] w-full">
                 <Bar
                   data={bridgeVolumeData}
@@ -103,15 +158,30 @@ export const AboutContent = () => {
                       tooltip: {
                         mode: "index",
                         intersect: false,
+                        callbacks: {
+                          label: function (context) {
+                            let value = context.raw as number;
+                            return `$${value.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
+                          },
+                        },
                       },
                     },
                     scales: {
                       x: {
-                        ticks: { color: "#cbd5e1" },
+                        ticks: { 
+                          color: "#cbd5e1",
+                          maxRotation: 45,
+                          minRotation: 45,
+                        },
                         grid: { display: false },
                       },
                       y: {
-                        ticks: { color: "#cbd5e1" },
+                        ticks: { 
+                          color: "#cbd5e1",
+                          callback: function (value) {
+                            return "$" + value.toLocaleString(undefined, { maximumFractionDigits: 0 });
+                          },
+                        },
                         grid: { color: "#334155" },
                       },
                     },
@@ -122,6 +192,7 @@ export const AboutContent = () => {
           </div>
         </div>
       </section>
+      <Footer></Footer>
     </div>
   );
 };

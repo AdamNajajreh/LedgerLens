@@ -2,14 +2,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  FiInfo,
-  FiCircle,
-  FiMenu,
-  FiX,
-  FiArrowRight,
-  FiLayers,
-} from "react-icons/fi";
+import { FiInfo, FiCircle, FiMenu, FiX, FiArrowRight, FiLayers } from "react-icons/fi";
 
 const routes = [
   { title: "About", href: "/dashboard/about", icon: FiInfo },
@@ -22,8 +15,8 @@ export const Navbar = () => {
   const pathname = usePathname();
 
   return (
-    <div className="w-full text-gray-700 bg-white border-b border-gray-200 shadow-md rounded-2xl">
-      <div className="container mx-auto px-4">
+    <div className="w-[90%] mx-auto text-gray-700 bg-white border-b border-gray-200 shadow-md rounded-2xl">
+      <div className="container mx-auto ">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between">
           <div className="flex items-center justify-between py-4">
             <Link
@@ -36,11 +29,7 @@ export const Navbar = () => {
               className="md:hidden rounded-lg focus:outline-none focus:shadow-outline hover:bg-gray-100 p-2 transition-colors"
               onClick={() => setIsOpen(!isOpen)}
             >
-              {isOpen ? (
-                <FiX className="w-6 h-6" />
-              ) : (
-                <FiMenu className="w-6 h-6" />
-              )}
+              {isOpen ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
             </button>
           </div>
           <div className="flex items-center">
@@ -67,7 +56,7 @@ export const Navbar = () => {
             </nav>
             <Link
               href="/dashboard/apppage"
-              className="rounded-2xl ml-24 p-6 py-2 bg-black text-white font-semibold hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:shadow-outline flex items-center gap-2"
+              className="rounded-2xl ml-24 p-6 py-2 bg-gradient-to-r from-rose-500 to-orange-400 text-white font-semibold hover:bg-gray-800 transition-colors duration-200 hover:opacity-90 focus:outline-none focus:shadow-outline flex items-center gap-2"
             >
               Launch App
               <FiArrowRight className="w-4 h-4" />

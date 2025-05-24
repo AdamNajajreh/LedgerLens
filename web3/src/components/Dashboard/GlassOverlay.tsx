@@ -9,7 +9,7 @@ export default function GlassOverlay() {
         left: 0,
         width: "100vw",
         height: "100vh",
-        backdropFilter: "blur(3px)",
+        backdropFilter: "blur(5px)",
         background: "rgba(255, 255, 255, 0.05)",
         zIndex: 1,
         display: "flex",
