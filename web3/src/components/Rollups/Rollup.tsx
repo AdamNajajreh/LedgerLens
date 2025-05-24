@@ -3,9 +3,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import MagnifyingGlass from "./MagnifiingGlass";
-import { number } from "framer-motion";
-import { Euler } from "three";
-import ImageStepper from "./ImageStepper";
 import { Footer } from "../Footer/Footer";
 import DancingDude from "./DancingDude";
 
@@ -27,12 +24,7 @@ export const Rollup = () => {
     const onScroll = () => {
       const index = Math.round(container.scrollTop / window.innerHeight);
       setBgColor(backgroundColors[index % backgroundColors.length]);
-      setSectionIndex((prev) => {
-        if (prev !== index) {
-          console.log("🟢 Scrolled to section:", index);
-        }
-        return index;
-      });
+      setSectionIndex(index);
     };
 
     container.addEventListener("scroll", onScroll);
@@ -58,7 +50,26 @@ export const Rollup = () => {
       className="h-screen w-full overflow-y-scroll text-white snap-y snap-mandatory relative transition-colors duration-700 ease-in-out"
       style={{ backgroundColor: bgColor }}
     >
-      {/* 3D Canvas fixed behind */}
+      {/* Scroll Dot Navigator */}
+      <div className="fixed top-1/2 right-4 pr-[6px] transform -translate-y-1/2 z-50 flex flex-col space-y-4">
+        {[0, 1, 2, 3].map((i) => (
+          <button
+            key={i}
+            onClick={() =>
+              document
+                .getElementById(`section-${i}`)
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
+            className={`w-4 h-4 rounded-full transition-all duration-300 ${
+              sectionIndex === i
+                ? "bg-orange-500 scale-125"
+                : "bg-gray-400 hover:bg-orange-400"
+            }`}
+          />
+        ))}
+      </div>
+
+      {/* 3D Background Canvas */}
       <div className="fixed top-0 left-0 w-full h-screen z-0">
         <Canvas
           camera={{ position: [0, 0, 20], fov: 45 }}
@@ -75,9 +86,12 @@ export const Rollup = () => {
         </Canvas>
       </div>
 
-      {/* Content */}
+      {/* Content Sections */}
       <div className="relative z-10">
-        <section className="h-screen flex items-center justify-center snap-start">
+        <section
+          id="section-0"
+          className="h-screen flex items-center justify-center snap-start"
+        >
           <div className="max-w-4xl mx-auto text-center space-y-8 p-8 backdrop-blur-md bg-white/80 rounded-2xl m-8 border border-gray-200 shadow-lg">
             <h1 className="text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-rose-500 to-orange-400">
               Rollups Explained
@@ -106,7 +120,10 @@ export const Rollup = () => {
           </div>
         </section>
 
-        <section className="min-h-screen flex items-center justify-center snap-start">
+        <section
+          id="section-1"
+          className="min-h-screen flex items-center justify-center snap-start"
+        >
           <div className="max-w-4xl mx-auto space-y-10 p-8 backdrop-blur-md bg-white/80 rounded-2xl m-8 border border-gray-200 shadow-lg">
             <h2 className="text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-rose-500 to-orange-400">
               What are Rollups?
@@ -118,7 +135,6 @@ export const Rollup = () => {
               throughput while maintaining Ethereum's security.
             </p>
 
-            {/* Smaller Illustrative Images */}
             <div className="flex flex-col sm:flex-row justify-center items-center gap-44">
               <div className="text-center">
                 <img
@@ -141,7 +157,10 @@ export const Rollup = () => {
           </div>
         </section>
 
-        <section className="min-h-screen flex items-center justify-center snap-start">
+        <section
+          id="section-2"
+          className="min-h-screen flex items-center justify-center snap-start"
+        >
           <div className="max-w-6xl mx-auto space-y-8 p-8">
             <h2 className="text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-rose-500 to-orange-400">
               Types of Rollups
@@ -155,10 +174,6 @@ export const Rollup = () => {
                   Assume validity by default; fraud proofs can challenge
                   incorrect transactions.
                 </p>
-                {/* <ImageStepper
-                  images={["/images/1.png", "/images/1.png", "/images/1.png", "/images/kotleba.jpg"]}
-                  title="Cigos"
-                ></ImageStepper> */}
               </div>
               <div className="p-8 rounded-2xl backdrop-blur-md bg-white/80 border border-gray-200 hover:border-gray-300 shadow-lg">
                 <h3 className="text-2xl font-semibold mb-4 text-orange-400">
@@ -173,43 +188,44 @@ export const Rollup = () => {
           </div>
         </section>
 
-        <div>
-          <section className="min-h-screen flex items-center justify-center snap-start">
-            <div className="max-w-6xl mx-auto space-y-8 p-8">
-              <h2 className="text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-rose-500 to-orange-400">
-                Benefits of Rollups
-              </h2>
-              <div className="grid grid-cols-3 gap-6">
-                <div className="p-8 rounded-2xl backdrop-blur-md bg-white/80 border border-gray-200 shadow-lg">
-                  <h3 className="text-2xl font-semibold mb-4 text-rose-500">
-                    Lower Fees
-                  </h3>
-                  <p className="text-gray-700">
-                    Reduce transaction costs by executing off-chain.
-                  </p>
-                </div>
-                <div className="p-8 rounded-2xl backdrop-blur-md bg-white/80 border border-gray-200 shadow-lg">
-                  <h3 className="text-2xl font-semibold mb-4 text-orange-400">
-                    Higher Throughput
-                  </h3>
-                  <p className="text-gray-700">
-                    Enable more transactions per second.
-                  </p>
-                </div>
-                <div className="p-8 rounded-2xl backdrop-blur-md bg-white/80 border border-gray-200 shadow-lg">
-                  <h3 className="text-2xl font-semibold mb-4 text-rose-500">
-                    Security
-                  </h3>
-                  <p className="text-gray-700">
-                    Maintain Ethereum’s security guarantees via data
-                    availability.
-                  </p>
-                </div>
+        <section
+          id="section-3"
+          className="min-h-screen flex items-center justify-center snap-start"
+        >
+          <div className="max-w-6xl mx-auto space-y-8 p-8">
+            <h2 className="text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-rose-500 to-orange-400">
+              Benefits of Rollups
+            </h2>
+            <div className="grid grid-cols-3 gap-6">
+              <div className="p-8 rounded-2xl backdrop-blur-md bg-white/80 border border-gray-200 shadow-lg">
+                <h3 className="text-2xl font-semibold mb-4 text-rose-500">
+                  Lower Fees
+                </h3>
+                <p className="text-gray-700">
+                  Reduce transaction costs by executing off-chain.
+                </p>
+              </div>
+              <div className="p-8 rounded-2xl backdrop-blur-md bg-white/80 border border-gray-200 shadow-lg">
+                <h3 className="text-2xl font-semibold mb-4 text-orange-400">
+                  Higher Throughput
+                </h3>
+                <p className="text-gray-700">
+                  Enable more transactions per second.
+                </p>
+              </div>
+              <div className="p-8 rounded-2xl backdrop-blur-md bg-white/80 border border-gray-200 shadow-lg">
+                <h3 className="text-2xl font-semibold mb-4 text-rose-500">
+                  Security
+                </h3>
+                <p className="text-gray-700">
+                  Maintain Ethereum’s security guarantees via data availability.
+                </p>
               </div>
             </div>
-          </section>
-          <Footer></Footer>
-        </div>
+          </div>
+        </section>
+
+        <Footer />
       </div>
     </div>
   );
