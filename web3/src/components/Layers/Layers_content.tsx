@@ -24,10 +24,11 @@ export const Layers_content = () => {
   }, []);
 
   return (
-    <div
-      ref={scrollRef}
-      className="h-screen w-full overflow-y-scroll text-white snap-y snap-mandatory relative"
-    >
+    <div className="h-screen w-full overflow-y-scroll text-white snap-y snap-mandatory relative">
+      {/* Gradient Lines */}
+      <div className="fixed left-0 top-1/4 w-1 h-1/2 bg-gradient-to-b from-rose-500 to-orange-400 z-30"></div>
+      <div className="fixed right-0 top-1/4 w-1 h-1/2 bg-gradient-to-b from-rose-500 to-orange-400 z-30"></div>
+
       {/* Hero Section */}
       <section
         id="section-0"

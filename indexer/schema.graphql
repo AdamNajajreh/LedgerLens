@@ -1,0 +1,15 @@
+type BridgeERC20Transfer @entity {
+  id: ID!                         # Unique: txHash + logIndex
+  txHash: String!                 # Transaction hash
+  logIndex: Int!                  # Log index in the transaction
+  blockNumber: BigInt!            # Block number of the event
+  timestamp: BigInt!              # Block timestamp (Unix epoch seconds)
+
+  from: String! @index            # Sender address (user or bridge)
+  to: String! @index              # Receiver address (user or bridge)
+  amount: BigInt!                 # Token amount transferred
+
+  bridgeName: String             # Bridge protocol name, e.g. "Optimism"
+  direction: String              # "IN" if tokens moved into bridge, "OUT" if moved out
+  destinationChain: String       # Destination L2 chain name (e.g. "Arbitrum")
+}
