@@ -7,10 +7,18 @@ import { number } from "framer-motion";
 import { Euler } from "three";
 import ImageStepper from "./ImageStepper";
 import { Footer } from "../Footer/Footer";
+import DancingDude from "./DancingDude";
 
 export const Rollup = () => {
   const [sectionIndex, setSectionIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const backgroundColors = [
+    "#fdf2f8", // pink
+    "#f0fdf4", // green
+    "#eef2ff", // blue
+    "#fff7ed", // orange
+  ];
+  const [bgColor, setBgColor] = useState(backgroundColors[0]);
 
   useEffect(() => {
     const container = scrollContainerRef.current;
@@ -18,6 +26,7 @@ export const Rollup = () => {
 
     const onScroll = () => {
       const index = Math.round(container.scrollTop / window.innerHeight);
+      setBgColor(backgroundColors[index % backgroundColors.length]);
       setSectionIndex((prev) => {
         if (prev !== index) {
           console.log("🟢 Scrolled to section:", index);
@@ -46,13 +55,14 @@ export const Rollup = () => {
   return (
     <div
       ref={scrollContainerRef}
-      className="h-screen w-full overflow-y-scroll text-white snap-y snap-mandatory relative"
+      className="h-screen w-full overflow-y-scroll text-white snap-y snap-mandatory relative transition-colors duration-700 ease-in-out"
+      style={{ backgroundColor: bgColor }}
     >
       {/* 3D Canvas fixed behind */}
       <div className="fixed top-0 left-0 w-full h-screen z-0">
         <Canvas
           camera={{ position: [0, 0, 20], fov: 45 }}
-          style={{ background: "#e4e6ea" }}
+          style={{ background: bgColor }}
         >
           <MagnifyingGlass
             position={positions[sectionIndex] ?? [0, 0, -10]}
@@ -61,6 +71,7 @@ export const Rollup = () => {
             bobSpeed={5}
             scale={1.7}
           />
+          <DancingDude />
         </Canvas>
       </div>
 
