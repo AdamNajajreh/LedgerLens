@@ -13,10 +13,7 @@ export default function DancingDude() {
   useEffect(() => {
     const defaultClip = animations[0];
     if (defaultClip && actions[defaultClip.name]) {
-      actions[defaultClip.name]
-        .reset()
-        .play()
-        .setLoop(THREE.LoopRepeat, Infinity);
+      actions[defaultClip.name].reset().play().setLoop(THREE.LoopRepeat, Infinity);
     }
   }, [actions, animations]);
 
@@ -27,7 +24,7 @@ export default function DancingDude() {
   });
 
   return (
-    <group ref={group} scale={0.2} position={[22, -10, -5]}>
+    <group ref={group} scale={0.2} position={[20, -10, -5]}>
       <primitive object={scene} />
     </group>
   );
