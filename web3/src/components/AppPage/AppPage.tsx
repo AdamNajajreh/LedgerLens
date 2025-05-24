@@ -124,7 +124,15 @@ export default function AppPage() {
         },
       }
     );
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+    setTimeout(() => {
+      const ethNode = nodes.get("Ethereum");
+      const opNode = nodes.get("Optimism");
+
+      if (ethNode && opNode) {
+        nodes.remove(["Ethereum", "Optimism"]);
+        nodes.add([ethNode, opNode]);
+      }
+    }, 100);
 
     let t1 = 0;
     let t2 = 0.5; // staggered start
