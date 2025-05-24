@@ -92,7 +92,7 @@ export const AboutContent = () => {
   }, []);
 
   return (
-    <div ref={scrollRef} className="h-screen w-full overflow-y-scroll text-white snap-y snap-mandatory relative">
+    <div ref={scrollRef} className="h-screen w-full overflow-y-scroll text-white snap-y snap-mandatory relative scrollbar-hide">
       {/* Scroll Dots */}
       <div className="fixed top-1/2 right-4 pr-[6px] transform -translate-y-1/2 z-50 flex flex-col space-y-4">
         {[0, 1].map((i) => (

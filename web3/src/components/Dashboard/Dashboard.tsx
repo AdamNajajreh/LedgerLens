@@ -5,7 +5,7 @@ import DashboardComp from "./DashboardComp";
 
 export const Dashboard = () => {
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen scrollbar-hide">
       <div className="fixed inset-0 z-0">
         <GraphScene />
       </div>
