@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import { Footer } from "../Footer/Footer";
 
 export const Layers_content = () => {
   return (
@@ -10,7 +11,7 @@ export const Layers_content = () => {
       <section className="h-screen flex items-center justify-center snap-start">
         <div className="max-w-4xl mx-auto text-center space-y-8 p-8 backdrop-blur-md bg-white/80 rounded-2xl m-8 border border-gray-200 hover:border-gray-300 transition-all duration-300 shadow-lg">
           <h2 className="text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-rose-500 to-orange-400">
-            🌐 Ethereum's Layer Architecture
+            Ethereum's Layer Architecture
           </h2>
           <p className="text-2xl text-gray-700">
             Discover how Ethereum's multi-layer architecture enables scalability, security, and innovation
@@ -127,6 +128,7 @@ export const Layers_content = () => {
           </div>
         </div>
       </section>
+      <Footer></Footer>
     </div>
   );
 };
